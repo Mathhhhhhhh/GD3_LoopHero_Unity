@@ -510,7 +510,7 @@ GameObject:
   - component: {fileID: 583276989}
   - component: {fileID: 583276988}
   m_Layer: 0
-  m_Name: Pos Process
+  m_Name: PostProcessVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
