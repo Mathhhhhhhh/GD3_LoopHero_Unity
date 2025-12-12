@@ -21,5 +21,11 @@ public class Player : MonoBehaviour
     {
         _playerData._cellNumber = _board.GetNextCellToMove(_playerData._cellNumber+value);
         MoveToCell();
+        ActivateCell();
+    }
+    public void ActivateCell()
+    {
+        Cell cell = _board.GetCellByNumber(_playerData._cellNumber);
+        cell.Activate(this);
     }
 }

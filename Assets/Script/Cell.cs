@@ -1,16 +1,13 @@
 using UnityEngine;
 
-public class Cell : MonoBehaviour
+public class Cell : MonoBehaviour, ICellActivable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+    public virtual void Activate(Player CurrentPawn)
+    { 
+        if(GetComponent<IActionable>() != null)
+        { 
+            GetComponent<IActionable>().Action(CurrentPawn);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
