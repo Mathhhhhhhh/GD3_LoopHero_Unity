@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a01ece32ade69d54a83a6f4487a5ee96, type: 3}
-  m_Name: ForgeronDialogue
+  m_Name: VillageoisDilaogue2
   m_EditorClassIdentifier: 
   rows:
   - rowNumber: 0
-    characterName: Forgeron
-    longDialogue: 'Salut, comment ca va ? '
+    characterName: Villageois
+    longDialogue: "Tiens prend cette heure suppl\xE9mentaire."
     nextRowNumber: 1
   - rowNumber: 1
-    characterName: Player
-    longDialogue: Salut bien et toi ?
+    characterName: MC
+    longDialogue: Merci !
     nextRowNumber: 2
   - rowNumber: 2
-    characterName: Forgeron
-    longDialogue: "Bof, bonne journ\xE9e j'ai autre chose a faire."
+    characterName: Villageois
+    longDialogue: "Bon courage dans ta qu\xEAte."
     nextRowNumber: -1

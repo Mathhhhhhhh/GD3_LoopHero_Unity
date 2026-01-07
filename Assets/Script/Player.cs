@@ -7,12 +7,13 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        _playerData.ResetToStart();
         MoveToCell();
     }
 
     private void MoveToCell()
     {
-        Transform NewPos = _board.GetCellByNumber(_playerData._cellNumber).transform; //TODO : Get cell number
+        Transform NewPos = _board.GetCellByNumber(_playerData._cellNumber).transform; 
         transform.position = NewPos.position;
         transform.rotation = NewPos.rotation;
     }

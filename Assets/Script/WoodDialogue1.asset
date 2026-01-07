@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01ece32ade69d54a83a6f4487a5ee96, type: 3}
+  m_Name: WoodDialogue1
+  m_EditorClassIdentifier: 
+  rows:
+  - rowNumber: 0
+    characterName: MC
+    longDialogue: "Ca doit \xEAtre le bois dont parl\xE9 le Bucheron."
+    nextRowNumber: 1
+  - rowNumber: 1
+    characterName: MC
+    longDialogue: "\"Bois r\xE9cup\xE9r\xE9\""
+    nextRowNumber: -1
