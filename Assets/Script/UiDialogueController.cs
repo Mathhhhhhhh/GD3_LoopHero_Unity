@@ -109,18 +109,14 @@ public class UiDialogueController : MonoBehaviour
             _choiceButtonsContainer.SetActive(false);
         }
     }
-
     private void OnChoiceSelected(int nextRowNumber, bool doesNotProgress)
     {
         Debug.Log($"<color=blue>[UiDialogueController] OnChoiceSelected - NextRow: {nextRowNumber}, DoesNotProgress: {doesNotProgress}</color>");
 
-        if (doesNotProgress)
-        {
-            _dialogueComponent.SetShouldIncrementVisit(false);
-        }
-
-        _dialogueComponent.GoToRow(nextRowNumber);
+        bool shouldProgress = !doesNotProgress;
+        _dialogueComponent.GoToRow(nextRowNumber, shouldProgress);
     }
+
 
     private void ClearChoiceButtons()
     {

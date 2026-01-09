@@ -6,6 +6,12 @@ public class WoodCollector : MonoBehaviour, IActionable
 
     public void Action(Player CurrentPawn)
     {
+        if (!QuestManager.Instance.BucheronQuestAccepted)
+        {
+            Debug.Log("<color=yellow>[WoodCollector] La quête du Bucheron n'a pas été acceptée</color>");
+            return;
+        }
+
         if (!_hasBeenCollected)
         {
             _hasBeenCollected = true;

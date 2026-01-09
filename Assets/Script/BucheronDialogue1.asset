@@ -18,7 +18,7 @@ MonoBehaviour:
     longDialogue: "Jeune aventurier pourrais-tu me r\xE9cup\xE9rer du bois dans la
       foret plus loin en \xE9change d'heure ?"
     nextRowNumber: 1
-    hasChoices: 0
+    hasChoices: 1
     choices:
     - choiceText: Yes
       nextRowNumber: 1

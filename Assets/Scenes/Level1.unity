@@ -3046,7 +3046,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: eb598cf73c3b99a4c821e375aa0f51a5, type: 2}
     - target: {fileID: 8077634934797209234, guid: 1c43f39b36fd5fc41b08f7fd9ed911c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.77
+      value: -4.9
       objectReference: {fileID: 0}
     - target: {fileID: 8077634934797209234, guid: 1c43f39b36fd5fc41b08f7fd9ed911c4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3054,7 +3054,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8077634934797209234, guid: 1c43f39b36fd5fc41b08f7fd9ed911c4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.85
+      value: -4.01
       objectReference: {fileID: 0}
     - target: {fileID: 8077634934797209234, guid: 1c43f39b36fd5fc41b08f7fd9ed911c4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3137,6 +3137,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1328269793}
         m_TargetAssemblyTypeName: BucheronQuestTrigger, Assembly-CSharp
         m_MethodName: OnQuestComplete
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 836705423}
+        m_TargetAssemblyTypeName: QuestManager, Assembly-CSharp
+        m_MethodName: AcceptBucheronQuest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4557,7 +4569,7 @@ PrefabInstance:
       objectReference: {fileID: 1519267505}
     - target: {fileID: 6303140245486503371, guid: 0f00c515a590a074eaaf747b392a79a5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.38
+      value: 4.42
       objectReference: {fileID: 0}
     - target: {fileID: 6303140245486503371, guid: 0f00c515a590a074eaaf747b392a79a5, type: 3}
       propertyPath: m_LocalPosition.y
