@@ -15,7 +15,7 @@ MonoBehaviour:
   rows:
   - rowNumber: 0
     characterName: Villageois
-    longDialogue: "Tiens prend cette heure suppl\xE9mentaire."
+    longDialogue: "Tiens prend ces 2h suppl\xE9mentaires."
     nextRowNumber: 1
   - rowNumber: 1
     characterName: MC

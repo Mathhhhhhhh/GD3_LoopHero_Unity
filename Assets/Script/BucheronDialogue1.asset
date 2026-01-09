@@ -18,15 +18,35 @@ MonoBehaviour:
     longDialogue: "Jeune aventurier pourrais-tu me r\xE9cup\xE9rer du bois dans la
       foret plus loin en \xE9change d'heure ?"
     nextRowNumber: 1
+    hasChoices: 0
+    choices:
+    - choiceText: Yes
+      nextRowNumber: 1
+      doesNotProgress: 0
+    - choiceText: Non
+      nextRowNumber: 4
+      doesNotProgress: 1
   - rowNumber: 1
     characterName: MC
-    longDialogue: Bien sur mais pourquoi avez-vous besoin de ce bois ?
+    longDialogue: Pourquoi avez-vous besoin de ce bois ?
     nextRowNumber: 2
+    hasChoices: 0
+    choices: []
   - rowNumber: 2
     characterName: Bucheron
     longDialogue: "Je cherche \xE0 reconstuire ma maison, mais tout seul c'est compliqu\xE9."
     nextRowNumber: 3
+    hasChoices: 0
+    choices: []
   - rowNumber: 3
     characterName: MC
     longDialogue: Pas de soucis je vais vous aider !
     nextRowNumber: -1
+    hasChoices: 0
+    choices: []
+  - rowNumber: 4
+    characterName: MC
+    longDialogue: "Tr\xE8s bien au revoir."
+    nextRowNumber: -1
+    hasChoices: 0
+    choices: []

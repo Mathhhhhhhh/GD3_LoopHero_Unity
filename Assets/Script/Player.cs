@@ -13,17 +13,34 @@ public class Player : MonoBehaviour
 
     private void MoveToCell()
     {
-        Transform NewPos = _board.GetCellByNumber(_playerData._cellNumber).transform; 
+        Transform NewPos = _board.GetCellByNumber(_playerData._cellNumber).transform;
         transform.position = NewPos.position;
         transform.rotation = NewPos.rotation;
     }
 
     public void TryMouving(int value)
     {
-        _playerData._cellNumber = _board.GetNextCellToMove(_playerData._cellNumber+value);
+        if (GameManager.Instance.MovementTimer.IsGameOver())
+        {
+            Debug.Log("Impossible de bouger : Game Over !");
+            return;
+        }
+
+        _playerData._cellNumber = _board.GetNextCellToMove(_playerData._cellNumber + value);
         MoveToCell();
-        ActivateCell();
+
+        bool canContinue = GameManager.Instance.MovementTimer.DecrementMove();
+
+        if (!canContinue)
+        {
+            GameManager.Instance.TriggerGameOver();
+        }
+        else
+        {
+            ActivateCell();
+        }
     }
+
     public void ActivateCell()
     {
         Cell cell = _board.GetCellByNumber(_playerData._cellNumber);

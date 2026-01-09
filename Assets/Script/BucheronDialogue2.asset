@@ -20,5 +20,9 @@ MonoBehaviour:
     nextRowNumber: 1
   - rowNumber: 1
     characterName: MC
+    longDialogue: "Tiens pour te remercier je te donne 5h supl\xE9mentaires"
+    nextRowNumber: 2
+  - rowNumber: 2
+    characterName: MC
     longDialogue: Tout le palisir est pour moi, je vous souhaite une bonne continuatiion.
     nextRowNumber: -1
