@@ -1,55 +1,47 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SceneLoaderCell : MonoBehaviour, IActionable
 {
     [Header("Scene Settings")]
     [SerializeField] private string _sceneToLoad = "NextLevel";
-    [SerializeField] private int _requiredVisits = 3;
-    [SerializeField] private float _loadDelay = 2f;
+
+    [Header("Turn Settings")]
+    [SerializeField] private TurnManager _turnManager;
 
     [Header("UI Settings")]
-    [SerializeField] private GameObject _diceButton;
+    [SerializeField] private LevelCompleteUI _levelCompleteUI;
 
     [Header("Celebration Settings")]
     [SerializeField] private ParticleSystem _confettiEffect;
 
-    private int _visitCount = 0;
-    private bool _isLoading = false;
+    private bool _hasCompleted = false;
 
     public void Action(Player CurrentPawn)
     {
-        if (_isLoading)
+        if (_hasCompleted)
         {
             return;
         }
 
-        _visitCount++;
-        Debug.Log($"Passage n°{_visitCount} sur la cellule de départ.");
-
-        if (_visitCount >= _requiredVisits)
+        if (_turnManager != null)
         {
-            Debug.Log($"{_requiredVisits} passages effectués ! Chargement de la scène '{_sceneToLoad}' dans {_loadDelay} secondes...");
-            _isLoading = true;
+            _turnManager.IncrementTurn();
 
-            if (_confettiEffect != null)
+            if (_turnManager.HasCompletedAllTurns())
             {
-                _confettiEffect.Play();
+                _hasCompleted = true;
+                Debug.Log("Tous les tours complétés ! Affichage du panneau de victoire...");
+
+                if (_confettiEffect != null)
+                {
+                    _confettiEffect.Play();
+                }
+
+                if (_levelCompleteUI != null)
+                {
+                    _levelCompleteUI.ShowLevelComplete(_sceneToLoad);
+                }
             }
-
-            StartCoroutine(LoadSceneWithDelay());
         }
-    }
-
-    private System.Collections.IEnumerator LoadSceneWithDelay()
-    {
-        if (_diceButton != null)
-        {
-            _diceButton.SetActive(false);
-        }
-
-        yield return new WaitForSeconds(_loadDelay);
-
-        SceneManager.LoadScene(_sceneToLoad);
     }
 }

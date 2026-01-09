@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MovementTimer _movementTimer;
     [SerializeField] private int _startingMoves = 20;
 
+    [Header("Turn Settings")]
+    [SerializeField] private TurnManager _turnManager;
+
     [Header("UI References")]
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject _diceButton;
@@ -46,6 +49,11 @@ public class GameManager : MonoBehaviour
         {
             _movementTimer.SetMaxMoves(_startingMoves);
             _movementTimer.ResetTimer();
+        }
+
+        if (_turnManager != null)
+        {
+            _turnManager.ResetTurns();
         }
 
         if (_gameOverPanel != null)
@@ -75,6 +83,11 @@ public class GameManager : MonoBehaviour
         {
             _movementTimer.SetMaxMoves(_startingMoves);
             _movementTimer.ResetTimer();
+        }
+
+        if (_turnManager != null)
+        {
+            _turnManager.ResetTurns();
         }
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(
