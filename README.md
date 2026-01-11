@@ -25,7 +25,7 @@ Il sera amené à rencontrer des habitants de ce monde qui choisira d’aider ou
 - Aider le joueur
 - Proposer des quêtes
 - Offrir des choix permettant de gagner du temps
-- 
+  
 Références & Inspirations
 
 Loop Hero :
