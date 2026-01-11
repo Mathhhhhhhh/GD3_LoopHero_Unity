@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Packages/com.bezi.sidekick/Editor/Resources/Icons/Dark/bezi-icon.png.meta
 guid: 5158375bd617145448050205372e9925
-========
-guid: 70106c8c86fb348da8362e9056ec5eec
->>>>>>>> 1e20259900366f3555fd0555967eabee74a520ca:Packages/com.bezi.sidekick/Editor/Resources/Icons/Dark/bezi-disconnected.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

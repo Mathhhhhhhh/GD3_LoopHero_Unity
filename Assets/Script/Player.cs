@@ -7,40 +7,22 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        _playerData.ResetToStart();
         MoveToCell();
     }
 
     private void MoveToCell()
     {
-        Transform NewPos = _board.GetCellByNumber(_playerData._cellNumber).transform;
+        Transform NewPos = _board.GetCellByNumber(_playerData._cellNumber).transform; //TODO : Get cell number
         transform.position = NewPos.position;
         transform.rotation = NewPos.rotation;
     }
 
     public void TryMouving(int value)
     {
-        if (GameManager.Instance.MovementTimer.IsGameOver())
-        {
-            Debug.Log("Impossible de bouger : Game Over !");
-            return;
-        }
-
-        _playerData._cellNumber = _board.GetNextCellToMove(_playerData._cellNumber + value);
+        _playerData._cellNumber = _board.GetNextCellToMove(_playerData._cellNumber+value);
         MoveToCell();
-
-        bool canContinue = GameManager.Instance.MovementTimer.DecrementMove();
-
-        if (!canContinue)
-        {
-            GameManager.Instance.TriggerGameOver();
-        }
-        else
-        {
-            ActivateCell();
-        }
+        ActivateCell();
     }
-
     public void ActivateCell()
     {
         Cell cell = _board.GetCellByNumber(_playerData._cellNumber);
