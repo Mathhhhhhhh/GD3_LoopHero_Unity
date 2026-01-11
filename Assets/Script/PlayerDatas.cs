@@ -4,4 +4,8 @@ using UnityEngine;
 public class PlayerDatas : ScriptableObject
 {
     [SerializeField] public int _cellNumber;
+    public void ResetToStart()
+    {
+        _cellNumber = 0;
+    }
 }

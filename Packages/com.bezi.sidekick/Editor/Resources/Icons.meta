@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Packages/com.bezi.sidekick/Editor/Resources/Icons.meta
 guid: d0022f0eb21a4294a815e5f72de5489e
+========
+guid: bd000203fd777c54e927ed0ff4122fa6
+>>>>>>>> 1e20259900366f3555fd0555967eabee74a520ca:Packages/com.bezi.sidekick/Editor/Plugins.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
