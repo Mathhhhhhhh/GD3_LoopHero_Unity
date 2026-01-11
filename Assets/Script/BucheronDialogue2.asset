@@ -16,7 +16,7 @@ MonoBehaviour:
   - rowNumber: 0
     characterName: "B\xFBcheron"
     longDialogue: "Merci beaucoup, gr\xE2ce \xE0 toi je vais pouvoir passer l\u2019hiver
-      au chaud. Tiens, ton heure en plus."
+      au chaud."
     nextRowNumber: 1
     hasChoices: 0
     choices: []
