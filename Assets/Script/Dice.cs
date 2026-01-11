@@ -6,7 +6,7 @@ public class Dice : MonoBehaviour
 
     public void RollTheDice()
     {
-        int value = Random.Range(1,7);
+        int value = Random.Range(1,1);
         Debug.Log($"Le dé a fait {value}");
         _player.TryMouving(value);
     }
