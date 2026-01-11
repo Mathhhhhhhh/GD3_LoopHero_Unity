@@ -22,6 +22,9 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] private float _maxIntensity = 1.5f;
     [SerializeField] private float _minIntensity = 0.1f;
 
+    [Header("Debug")]
+    [SerializeField] private bool _showDebugLogs = true;
+
     private float _totalHours;
     private float _initialHours;
 
@@ -35,6 +38,11 @@ public class DayNightCycle : MonoBehaviour
 
         SetupDefaultGradientAndCurve();
         UpdateDayNightCycle();
+
+        if (_showDebugLogs)
+        {
+            Debug.Log($"<color=yellow>[DayNightCycle] Initialized - Start Time: {_startTimeInHours}h, Total Hours: {_totalHours}</color>");
+        }
     }
 
     private void Update()
@@ -44,8 +52,19 @@ public class DayNightCycle : MonoBehaviour
 
     private void UpdateDayNightCycle()
     {
-        if (_movementTimer == null || _sunLight == null)
+        if (_movementTimer == null)
+        {
+            if (_showDebugLogs)
+                Debug.LogWarning("[DayNightCycle] MovementTimer is null!");
             return;
+        }
+
+        if (_sunLight == null)
+        {
+            if (_showDebugLogs)
+                Debug.LogWarning("[DayNightCycle] SunLight is null!");
+            return;
+        }
 
         float timeProgress = CalculateTimeProgress();
         float rotationAngle = CalculateSunRotation(timeProgress);
@@ -84,7 +103,7 @@ public class DayNightCycle : MonoBehaviour
 
     private void UpdateLightProperties(float timeProgress)
     {
-        if (_lightColorGradient != null && _lightColorGradient.colorKeys.Length > 0)
+        if (_lightColorGradient != null)
         {
             _sunLight.color = _lightColorGradient.Evaluate(timeProgress);
         }
@@ -98,7 +117,12 @@ public class DayNightCycle : MonoBehaviour
 
     private void SetupDefaultGradientAndCurve()
     {
-        if (_lightColorGradient == null || _lightColorGradient.colorKeys.Length == 0)
+        bool needsGradientSetup = _lightColorGradient == null ||
+            _lightColorGradient.colorKeys.Length <= 2 ||
+            (_lightColorGradient.colorKeys[0].color == Color.white &&
+             _lightColorGradient.colorKeys[1].color == Color.white);
+
+        if (needsGradientSetup)
         {
             _lightColorGradient = new Gradient();
 
@@ -114,6 +138,9 @@ public class DayNightCycle : MonoBehaviour
             alphaKeys[1] = new GradientAlphaKey(1f, 1f);
 
             _lightColorGradient.SetKeys(colorKeys, alphaKeys);
+
+            if (_showDebugLogs)
+                Debug.Log("<color=green>[DayNightCycle] Gradient réinitialisé avec les couleurs par défaut</color>");
         }
 
         if (_lightIntensityCurve == null || _lightIntensityCurve.length == 0)
@@ -124,6 +151,9 @@ public class DayNightCycle : MonoBehaviour
             _lightIntensityCurve.AddKey(0.5f, 1f);
             _lightIntensityCurve.AddKey(0.75f, 0.8f);
             _lightIntensityCurve.AddKey(1f, 0.1f);
+
+            if (_showDebugLogs)
+                Debug.Log("<color=green>[DayNightCycle] Courbe d'intensité réinitialisée</color>");
         }
     }
 
@@ -131,5 +161,14 @@ public class DayNightCycle : MonoBehaviour
     {
         float timeProgress = CalculateTimeProgress();
         return (_startTimeInHours + (timeProgress * 24f)) % 24f;
+    }
+
+    [ContextMenu("Reset Gradient and Curve")]
+    private void ForceResetGradientAndCurve()
+    {
+        _lightColorGradient = null;
+        _lightIntensityCurve = null;
+        SetupDefaultGradientAndCurve();
+        Debug.Log("<color=green>[DayNightCycle] Gradient et courbe forcés à se réinitialiser !</color>");
     }
 }

@@ -14,10 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rows:
   - rowNumber: 0
-    characterName: MC
-    longDialogue: "Ca doit \xEAtre le bois dont parl\xE9 le Bucheron."
+    characterName: Josh
+    longDialogue: "\xC7a doit \xEAtre le bois dont parlait le b\xFBcheron."
     nextRowNumber: 1
+    hasChoices: 0
+    choices: []
   - rowNumber: 1
-    characterName: MC
+    characterName: Josh
     longDialogue: "\"Bois r\xE9cup\xE9r\xE9\""
     nextRowNumber: -1
+    hasChoices: 0
+    choices: []

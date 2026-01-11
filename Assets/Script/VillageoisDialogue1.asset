@@ -14,19 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rows:
   - rowNumber: 0
-    characterName: MC
-    longDialogue: Bonjour, j'aimerai gagner du temps comment je peux faire ?
+    characterName: Josh
+    longDialogue: "Bonjour, j\u2019aimerais gagner du temps. Comment puis-je faire
+      ?"
     nextRowNumber: 1
+    hasChoices: 0
+    choices: []
   - rowNumber: 1
     characterName: Villageois
-    longDialogue: Bonjour, pour se faire, fait un tour complet du plateau et reviens
+    longDialogue: Bonjour, pour ce faire, fais un tour complet du plateau et reviens
       me parler.
     nextRowNumber: 2
+    hasChoices: 0
+    choices: []
   - rowNumber: 2
-    characterName: MC
+    characterName: Josh
     longDialogue: C'est pas un peu simple ?
     nextRowNumber: 3
+    hasChoices: 0
+    choices: []
   - rowNumber: 3
     characterName: Villageois
-    longDialogue: Evidement c'est le tutoriel !
+    longDialogue: "\xC9videmment, c\u2019est le tutoriel !"
     nextRowNumber: -1
+    hasChoices: 0
+    choices: []

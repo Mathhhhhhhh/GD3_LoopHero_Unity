@@ -14,15 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rows:
   - rowNumber: 0
-    characterName: Bucheron
-    longDialogue: "Merci beaucoup gr\xE2ce \xE0 toi je vais pouvoir passer l'hiver
-      au chaud, tiens ton heure en plus."
+    characterName: "B\xFBcheron"
+    longDialogue: "Merci beaucoup, gr\xE2ce \xE0 toi je vais pouvoir passer l\u2019hiver
+      au chaud. Tiens, ton heure en plus."
     nextRowNumber: 1
+    hasChoices: 0
+    choices: []
   - rowNumber: 1
-    characterName: MC
-    longDialogue: "Tiens pour te remercier je te donne 5h supl\xE9mentaires"
+    characterName: "B\xFBcheron"
+    longDialogue: "Tiens, pour te remercier, je te donne 5 h suppl\xE9mentaires."
     nextRowNumber: 2
+    hasChoices: 0
+    choices: []
   - rowNumber: 2
-    characterName: MC
-    longDialogue: Tout le palisir est pour moi, je vous souhaite une bonne continuatiion.
+    characterName: Josh
+    longDialogue: Tout le plaisir est pour moi, je vous souhaite une bonne continuation.
     nextRowNumber: -1
+    hasChoices: 0
+    choices: []
