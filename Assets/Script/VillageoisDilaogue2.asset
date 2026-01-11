@@ -15,13 +15,19 @@ MonoBehaviour:
   rows:
   - rowNumber: 0
     characterName: Villageois
-    longDialogue: "Tiens prend ces 2h suppl\xE9mentaires."
+    longDialogue: "Tiens, prends ces 2 heures suppl\xE9mentaires."
     nextRowNumber: 1
+    hasChoices: 0
+    choices: []
   - rowNumber: 1
-    characterName: MC
+    characterName: Josh
     longDialogue: Merci !
     nextRowNumber: 2
+    hasChoices: 0
+    choices: []
   - rowNumber: 2
     characterName: Villageois
     longDialogue: "Bon courage dans ta qu\xEAte."
     nextRowNumber: -1
+    hasChoices: 0
+    choices: []
