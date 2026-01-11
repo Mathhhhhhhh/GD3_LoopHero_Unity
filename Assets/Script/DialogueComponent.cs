@@ -8,12 +8,25 @@ public class DialogueComponent : MonoBehaviour, IActionable
     [SerializeField] private UiDialogueController _dialogueController;
 
     [Header("Déblocage")]
-    [SerializeField] private GameObject _objectToActivate;
+    [SerializeField] private GameObject[] _cellsToActivate;
+    [SerializeField] private Board _board;
+
+    [Header("Phrase d'attente")]
+    [SerializeField] private string _waitingMessage = "Je n'ai rien d'autre à dire pour le moment.";
+
+    private bool _dialogueCompleted = false;
 
     public void Action(Player CurrentPawn)
     {
-        _currentRow = GetDialogueRow();
-        _dialogueController.StartDialogue(this);
+        if (_dialogueCompleted)
+        {
+            _dialogueController.ShowWaitingMessage(_waitingMessage);
+        }
+        else
+        {
+            _currentRow = GetDialogueRow();
+            _dialogueController.StartDialogue(this);
+        }
     }
 
     public DialogueRow GetDialogueRow()
@@ -37,6 +50,7 @@ public class DialogueComponent : MonoBehaviour, IActionable
         {
             _dialogueController.EndDialogue();
             ActivateObject();
+            _dialogueCompleted = true;
         }
         else
         {
@@ -45,19 +59,20 @@ public class DialogueComponent : MonoBehaviour, IActionable
             _dialogueController.UpdateText();
         }
     }
+
     private void ActivateObject()
     {
-        if (_objectToActivate != null)
+        foreach (GameObject cell in _cellsToActivate)
         {
-            _objectToActivate.SetActive(true);
-            Debug.Log($"Section débloquée : {_objectToActivate.name}");
-
-            Board board = GetComponentInParent<Board>();
-            if (board != null)
+            if (cell != null)
             {
-                board.RefreshCells();
+                cell.SetActive(true);
             }
         }
-    }
 
+        if (_board != null)
+        {
+            _board.RefreshCells();
+        }
+    }
 }

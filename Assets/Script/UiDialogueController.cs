@@ -19,6 +19,14 @@ public class UiDialogueController : MonoBehaviour
         HideDiceButton();
     }
 
+    public void ShowWaitingMessage(string message)
+    {
+        _characterNameText.text = "";
+        _dialogueText.text = message;
+        _dialoguePanel.SetActive(true);
+        HideDiceButton();
+    }
+
     public void ChangeRow()
     {
         _dialogueComponent.GetNextRow();
