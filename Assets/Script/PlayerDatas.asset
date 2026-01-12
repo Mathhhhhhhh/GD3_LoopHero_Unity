@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84325a231f559345b1127a23125cee5, type: 3}
   m_Name: PlayerDatas
   m_EditorClassIdentifier: 
-  _cellNumber: 7
+  _cellNumber: 0

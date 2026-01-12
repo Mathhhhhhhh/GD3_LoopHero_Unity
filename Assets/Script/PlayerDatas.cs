@@ -4,4 +4,9 @@ using UnityEngine;
 public class PlayerDatas : ScriptableObject
 {
     [SerializeField] public int _cellNumber;
+
+    private void OnEnable()
+    {
+        _cellNumber = 0;
+    }
 }

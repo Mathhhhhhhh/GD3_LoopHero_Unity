@@ -5,9 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/NaureMorte.unity
     guid: 889fb56feaff3ec4999e7547e12fc3de
+  - enabled: 1
+    path: Assets/Scenes/Dev_map.unity
+    guid: 2de4ad0f2282ab640985153257f8dedd
+  - enabled: 1
+    path: Assets/Scenes/Sorciere.unity
+    guid: f9d8b27880391bf4d88fd24d2dc46952
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -4,15 +4,24 @@ public class Board : MonoBehaviour
 {
     [SerializeField] private Cell[] _cells;
 
+    private void Awake()
+    {
+        RefreshCells();
+    }
+
     public void RefreshCells()
     {
-        _cells = GetComponentsInChildren<Cell>(true);
-        Debug.Log($"Board rafraîchi : {_cells.Length} cellules");
+        _cells = GetComponentsInChildren<Cell>(false);
+        Debug.Log($"Board rafraîchi : {_cells.Length} cellules actives");
     }
 
     public Cell GetCellByNumber(int number)
     {
-        return _cells[number];
+        if (number >= 0 && number < _cells.Length)
+        {
+            return _cells[number];
+        }
+        return null;
     }
 
     public int GetNextCellToMove(int cellNumber)

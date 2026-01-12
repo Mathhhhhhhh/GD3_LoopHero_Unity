@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01ece32ade69d54a83a6f4487a5ee96, type: 3}
+  m_Name: AgriculteurDialogue
+  m_EditorClassIdentifier: 
+  rows:
+  - rowNumber: 0
+    characterName: Lulu
+    longDialogue: Bonjour ! Comment allez vous ?
+    nextRowNumber: 1
+  - rowNumber: 1
+    characterName: Agriculteur
+    longDialogue: "Mal ! Tr\xE8s mal ! Je ne sais pas o\xF9 sont pass\xE9es mes carottes
+      ! Va voir les champs pour moi s'il te plait !"
+    nextRowNumber: 2
+  - rowNumber: 2
+    characterName: Lulu
+    longDialogue: J'y vais !
+    nextRowNumber: -1
+  - rowNumber: 3
+    characterName: Agriculteur
+    longDialogue: "Je te remercie ! Essaye d'aller voir le vieux de l'autre c\xF4t\xE9
+      du village il en sait peut \xEAtre plus que moi. Et tiens, un peu d'\xE9nergie
+      en guise de remerciement."
+    nextRowNumber: -1
