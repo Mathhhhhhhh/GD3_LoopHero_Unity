@@ -5,6 +5,7 @@ public class Dice : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private EnergyBar _energyBar;
     [SerializeField] private float _energyCostPerRoll = 10f;
+    [SerializeField] private SaveManager saveManager;
 
     public void RollTheDice()
     {
@@ -22,5 +23,7 @@ public class Dice : MonoBehaviour
         int value = Random.Range(1, 1);
         Debug.Log($"Le dé a fait {value}");
         _player.TryMouving(value);
+
+        saveManager.SaveGame();
     }
 }
