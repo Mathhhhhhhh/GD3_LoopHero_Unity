@@ -19,6 +19,15 @@ sur le plateau principal.
 
 >>>Solution — ordre des cloches : 2, 1, 3.<<<
 
+
+In Game:
+- Jeu fonctionnel avec un tout petit peu de SoundDesign
+- Il y a une conséquence sur le monde, les cases intéractables gardent leur état de désactivation même après le minijeu.
+- Conséquence post minijeu = dialogue avec le vieux
+
+
+
+
 Note (version1)
 Suite à un appel important lors du dernier cours, le projet de Ludovic a été récupéré pour la suite. 
 Les anciens pushs sur le dépôt sont les siens. Le travail repris correspond uniquement à la mise à jour effectuée à partir de la fin du cours.
