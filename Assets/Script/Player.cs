@@ -7,6 +7,15 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        _board.RefreshCells();
+
+        if (GameInstance.Instance != null && GameInstance.Instance.HasSpawnOverride())
+        {
+            string cellName = GameInstance.Instance.GetAndClearSpawnCell();
+            int index = _board.GetCellIndexByName(cellName);
+            if (index >= 0) _playerData._cellNumber = index;
+        }
+
         MoveToCell();
     }
 

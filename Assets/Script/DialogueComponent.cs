@@ -1,33 +1,33 @@
 using UnityEngine;
 
-public class DialogueComponent : MonoBehaviour, IActionable
+public class DialogueComponent : MonoBehaviour, IActionable, IDialogue
 {
     [SerializeField] private DialogueDatas _dialogueData;
     private DialogueRow _currentRow;
     private int _currentRowIndex;
     [SerializeField] private UiDialogueController _dialogueController;
 
-    [Header("Déblocage premier dialogue")]
+    [Header("Deblocage premier dialogue")]
     [SerializeField] private GameObject[] _cellsToActivateFirst;
     [SerializeField] private Board _board;
     [SerializeField] private AudioClip _unlockSound;
     [SerializeField] private Material _materialAfterFirstDialogue;
     [SerializeField] private Material _materialForFirstCells;
 
-    [Header("Déblocage récompense")]
+    [Header("Deblocage recompense")]
     [SerializeField] private GameObject[] _cellsToActivateReward;
     [SerializeField] private DialogueComponent[] _dialoguesToUnlock;
     [SerializeField] private EnergyBar _energyBar;
     [SerializeField] private float _energyReward = 50f;
 
     [Header("Phrase d'attente")]
-    [SerializeField] private string _waitingMessage = "Je n'ai rien d'autre à dire pour le moment.";
+    [SerializeField] private string _waitingMessage = "Je n'ai rien d'autre a dire pour le moment.";
     [SerializeField] private bool _showWaitingMessage = true;
 
     [Header("Condition d'activation")]
     [SerializeField] private DialogueComponent _requiredQuestDialogue;
 
-    [Header("Changement de matériau")]
+    [Header("Changement de materiau")]
     [SerializeField] private Material _materialWhenQuestCompleted;
     [SerializeField] private Material _materialForRewardCells;
 
@@ -35,24 +35,73 @@ public class DialogueComponent : MonoBehaviour, IActionable
     private bool _questCompleted = false;
     private bool _rewardGiven = false;
 
+    private void Start()
+    {
+        if (GameInstance.Instance == null) return;
+
+        string id = gameObject.name;
+
+        if (GameInstance.Instance.IsRewardGiven(id))
+        {
+            _firstDialogueCompleted = true;
+            _questCompleted = true;
+            _rewardGiven = true;
+            RestoreFirstActivations();
+            RestoreRewardActivations();
+            Debug.Log($"[DialogueComponent] {id} : etat final restaure.");
+        }
+        else if (GameInstance.Instance.IsFirstDialogueCompleted(id))
+        {
+            _firstDialogueCompleted = true;
+            RestoreFirstActivations();
+            Debug.Log($"[DialogueComponent] {id} : premier dialogue restaure, cases reactivees.");
+        }
+    }
+
+    /// <summary>Reactive silencieusement les cases du premier dialogue sans effets de bord.</summary>
+    private void RestoreFirstActivations()
+    {
+        foreach (GameObject cell in _cellsToActivateFirst)
+        {
+            if (cell == null) continue;
+            cell.SetActive(true);
+            CellLuciole luciole = cell.GetComponent<CellLuciole>();
+            if (luciole != null) luciole.EnablePower();
+        }
+
+        _board?.RefreshCells();
+    }
+
+    /// <summary>Reactive silencieusement les cases de recompense sans effets de bord.</summary>
+    private void RestoreRewardActivations()
+    {
+        foreach (GameObject cell in _cellsToActivateReward)
+        {
+            if (cell == null) continue;
+            cell.SetActive(true);
+            CellLuciole luciole = cell.GetComponent<CellLuciole>();
+            if (luciole != null) luciole.EnablePower();
+        }
+
+        foreach (DialogueComponent dialogue in _dialoguesToUnlock)
+        {
+            if (dialogue != null) dialogue.enabled = true;
+        }
+
+        _board?.RefreshCells();
+    }
+
+    /// <summary>Declenchee quand le joueur pose le pion sur cette case.</summary>
     public void Action(Player CurrentPawn)
     {
         if (_requiredQuestDialogue != null && !_requiredQuestDialogue.IsQuestCompleted())
-        {
             return;
-        }
-
-        Debug.Log($"[DialogueComponent] Action - firstCompleted:{_firstDialogueCompleted}, questCompleted:{_questCompleted}, rewardGiven:{_rewardGiven}");
 
         if (_rewardGiven)
-        {
-            Debug.Log("[DialogueComponent] Quête terminée - case désactivée");
             return;
-        }
 
         if (_questCompleted)
         {
-            Debug.Log("[DialogueComponent] Démarrage dialogue récompense (row 3)");
             _currentRowIndex = 3;
             _currentRow = GetDialogueRow();
             _dialogueController.StartDialogue(this);
@@ -60,60 +109,38 @@ public class DialogueComponent : MonoBehaviour, IActionable
         else if (_firstDialogueCompleted)
         {
             if (_showWaitingMessage)
-            {
-                Debug.Log("[DialogueComponent] Affichage message d'attente");
                 _dialogueController.ShowWaitingMessage(_waitingMessage);
-            }
-            else
-            {
-                Debug.Log("[DialogueComponent] Premier dialogue terminé - case inactive");
-                return;
-            }
         }
         else
         {
-            Debug.Log("[DialogueComponent] Démarrage dialogue initial (row 0)");
             _currentRowIndex = 0;
             _currentRow = GetDialogueRow();
             _dialogueController.StartDialogue(this);
         }
     }
 
-    public DialogueRow GetDialogueRow()
-    {
-        return _dialogueData.rows[_currentRowIndex];
-    }
+    public DialogueRow GetDialogueRow() => _dialogueData.rows[_currentRowIndex];
+    public string GetDialogueText() => _currentRow.longDialogue;
+    public string GetCharactername() => _currentRow.characterName;
 
-    public string GetDialogueText()
-    {
-        return _currentRow.longDialogue;
-    }
-
-    public string GetCharactername()
-    {
-        return _currentRow.characterName;
-    }
-
+    /// <summary>Avance le dialogue a la ligne suivante ou termine la sequence.</summary>
     public void GetNextRow()
     {
-        Debug.Log($"[DialogueComponent] GetNextRow - currentRow nextNumber: {_currentRow.nextRowNumber}");
-
         if (_currentRow.nextRowNumber == -1)
         {
-            Debug.Log($"[DialogueComponent] Fin dialogue - questCompleted:{_questCompleted}, rewardGiven:{_rewardGiven}");
             _dialogueController.EndDialogue();
 
             if (_questCompleted && !_rewardGiven)
             {
-                Debug.Log("[DialogueComponent] *** ACTIVATION DES OBJETS DE RÉCOMPENSE ***");
                 ActivateRewardObjects();
                 _rewardGiven = true;
+                GameInstance.Instance?.RegisterRewardGiven(gameObject.name);
             }
             else if (!_questCompleted && !_firstDialogueCompleted)
             {
-                Debug.Log("[DialogueComponent] *** ACTIVATION DES CHAMPS (toutes les cases) ***");
                 ActivateFirstObjects();
                 _firstDialogueCompleted = true;
+                GameInstance.Instance?.RegisterFirstDialogueCompleted(gameObject.name);
             }
         }
         else
@@ -124,161 +151,90 @@ public class DialogueComponent : MonoBehaviour, IActionable
         }
     }
 
+    /// <summary>Marque la quete comme completee depuis l'exterieur (ex: CellChamps).</summary>
     public void UnlockDialogueLine(int lineIndex)
     {
-        Debug.Log($"[DialogueComponent] UnlockDialogueLine appelée - index:{lineIndex}");
         _questCompleted = true;
     }
 
-    public bool IsQuestCompleted()
-    {
-        return _questCompleted;
-    }
+    public bool IsQuestCompleted() => _questCompleted;
 
     private void ActivateFirstObjects()
     {
-        Debug.Log($"[DialogueComponent] ActivateFirstObjects - cellules à activer: {_cellsToActivateFirst.Length}");
-
         foreach (GameObject cell in _cellsToActivateFirst)
         {
-            if (cell != null)
-            {
-                Debug.Log($"[DialogueComponent] Activation de {cell.name}");
-                cell.SetActive(true);
-            }
+            if (cell == null) continue;
+            cell.SetActive(true);
         }
 
         if (_materialForFirstCells != null)
         {
-            Debug.Log($"[DialogueComponent] Application du matériau: {_materialForFirstCells.name}");
-
             foreach (GameObject cell in _cellsToActivateFirst)
             {
-                if (cell != null)
-                {
-                    MeshRenderer cellRenderer = cell.GetComponent<MeshRenderer>();
-                    if (cellRenderer != null)
-                    {
-                        Debug.Log($"[DialogueComponent] AVANT changement - {cell.name} a le matériau: {cellRenderer.sharedMaterial.name}");
-                        cellRenderer.sharedMaterial = _materialForFirstCells;
-                        Debug.Log($"[DialogueComponent] APRES changement - {cell.name} a le matériau: {cellRenderer.sharedMaterial.name}");
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"[DialogueComponent] {cell.name} n'a PAS de MeshRenderer!");
-                    }
-                }
+                if (cell == null) continue;
+                MeshRenderer r = cell.GetComponent<MeshRenderer>();
+                if (r != null) r.sharedMaterial = _materialForFirstCells;
             }
-        }
-        else
-        {
-            Debug.LogWarning("[DialogueComponent] _materialForFirstCells est NULL!");
         }
 
         foreach (GameObject cell in _cellsToActivateFirst)
         {
-            if (cell != null)
-            {
-                CellLuciole luciole = cell.GetComponent<CellLuciole>();
-                if (luciole != null)
-                {
-                    luciole.EnablePower();
-                }
-            }
+            if (cell == null) continue;
+            CellLuciole luciole = cell.GetComponent<CellLuciole>();
+            if (luciole != null) luciole.EnablePower();
         }
 
-        if (_board != null)
-        {
-            Debug.Log("[DialogueComponent] RefreshCells du Board");
-            _board.RefreshCells();
-        }
+        _board?.RefreshCells();
 
         if (_unlockSound != null)
-        {
             AudioSource.PlayClipAtPoint(_unlockSound, transform.position);
-        }
 
         if (_materialAfterFirstDialogue != null)
         {
-            MeshRenderer renderer = GetComponent<MeshRenderer>();
-            if (renderer != null)
-            {
-                renderer.sharedMaterial = _materialAfterFirstDialogue;
-                Debug.Log("[DialogueComponent] Changement de matériau après premier dialogue");
-            }
+            MeshRenderer r = GetComponent<MeshRenderer>();
+            if (r != null) r.sharedMaterial = _materialAfterFirstDialogue;
         }
     }
 
     private void ActivateRewardObjects()
     {
-        Debug.Log($"[DialogueComponent] ActivateRewardObjects - cellules à activer: {_cellsToActivateReward.Length}");
-
         foreach (GameObject cell in _cellsToActivateReward)
         {
-            if (cell != null)
-            {
-                Debug.Log($"[DialogueComponent] Activation de {cell.name}");
-                cell.SetActive(true);
-            }
+            if (cell == null) continue;
+            cell.SetActive(true);
         }
 
         if (_materialForRewardCells != null)
         {
             foreach (GameObject cell in _cellsToActivateReward)
             {
-                if (cell != null)
-                {
-                    MeshRenderer cellRenderer = cell.GetComponent<MeshRenderer>();
-                    if (cellRenderer != null)
-                    {
-                        cellRenderer.sharedMaterial = _materialForRewardCells;
-                        Debug.Log($"[DialogueComponent] Changement de matériau pour {cell.name}");
-                    }
-                }
+                if (cell == null) continue;
+                MeshRenderer r = cell.GetComponent<MeshRenderer>();
+                if (r != null) r.sharedMaterial = _materialForRewardCells;
             }
         }
 
         foreach (GameObject cell in _cellsToActivateReward)
         {
-            if (cell != null)
-            {
-                CellLuciole luciole = cell.GetComponent<CellLuciole>();
-                if (luciole != null)
-                {
-                    luciole.EnablePower();
-                }
-            }
+            if (cell == null) continue;
+            CellLuciole luciole = cell.GetComponent<CellLuciole>();
+            if (luciole != null) luciole.EnablePower();
         }
 
         foreach (DialogueComponent dialogue in _dialoguesToUnlock)
         {
-            if (dialogue != null)
-            {
-                Debug.Log($"[DialogueComponent] Déblocage dialogue de {dialogue.gameObject.name}");
-                dialogue.enabled = true;
-            }
+            if (dialogue != null) dialogue.enabled = true;
         }
 
         if (_energyBar != null && _energyReward > 0)
-        {
             _energyBar.AddEnergy(_energyReward);
-            Debug.Log($"[DialogueComponent] Récompense d'énergie donnée: +{_energyReward}");
-        }
 
-        if (_board != null)
-        {
-            Debug.Log("[DialogueComponent] RefreshCells du Board");
-            _board.RefreshCells();
-        }
+        _board?.RefreshCells();
 
         if (_materialWhenQuestCompleted != null)
         {
-            MeshRenderer renderer = GetComponent<MeshRenderer>();
-            if (renderer != null)
-            {
-                renderer.sharedMaterial = _materialWhenQuestCompleted;
-                Debug.Log("[DialogueComponent] Changement de matériau effectué");
-            }
+            MeshRenderer r = GetComponent<MeshRenderer>();
+            if (r != null) r.sharedMaterial = _materialWhenQuestCompleted;
         }
     }
 }

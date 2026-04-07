@@ -3,17 +3,18 @@ using UnityEngine;
 
 public class UiDialogueController : MonoBehaviour
 {
-    [SerializeField] private DialogueComponent _dialogueComponent;
     [SerializeField] private GameObject _dialoguePanel;
     [SerializeField] private TMP_Text _characterNameText;
     [SerializeField] private TMP_Text _dialogueText;
 
-    [Header("Bouton de dé")]
+    [Header("Bouton de dÃ©")]
     [SerializeField] private GameObject _diceButton;
 
-    public void StartDialogue(DialogueComponent dialogueComponent)
+    private IDialogue _currentDialogue;
+
+    public void StartDialogue(IDialogue dialogue)
     {
-        _dialogueComponent = dialogueComponent;
+        _currentDialogue = dialogue;
         UpdateText();
         _dialoguePanel.SetActive(true);
         HideDiceButton();
@@ -29,13 +30,13 @@ public class UiDialogueController : MonoBehaviour
 
     public void ChangeRow()
     {
-        _dialogueComponent.GetNextRow();
+        _currentDialogue?.GetNextRow();
     }
 
     public void UpdateText()
     {
-        _characterNameText.text = _dialogueComponent.GetCharactername();
-        _dialogueText.text = _dialogueComponent.GetDialogueText();
+        _characterNameText.text = _currentDialogue.GetCharactername();
+        _dialogueText.text = _currentDialogue.GetDialogueText();
     }
 
     public void EndDialogue()
@@ -47,16 +48,12 @@ public class UiDialogueController : MonoBehaviour
     private void HideDiceButton()
     {
         if (_diceButton != null)
-        {
             _diceButton.SetActive(false);
-        }
     }
 
     private void ShowDiceButton()
     {
         if (_diceButton != null)
-        {
             _diceButton.SetActive(true);
-        }
     }
 }
