@@ -18,6 +18,10 @@ public class CarrotQuestDialogue : MonoBehaviour, IActionable, IDialogue
     [SerializeField] private Material _materialReset;
     [SerializeField] private GameObject _agriculteurCell;
 
+    [Header("Case à débloquer après la quête")]
+    [SerializeField] private GameObject[] _cellsToActivateAfterQuest;
+    [SerializeField] private Board _board;
+
     private int _currentRowIndex = 0;
     private DialogueRow _currentRow;
     private bool _rewardGiven = false;
@@ -78,6 +82,13 @@ public class CarrotQuestDialogue : MonoBehaviour, IActionable, IDialogue
             }
 
             _carrotHUD?.ClearCarrots();
+
+            foreach (GameObject cell in _cellsToActivateAfterQuest)
+            {
+                if (cell != null) cell.SetActive(true);
+            }
+
+            _board?.RefreshCells();
         }
         else
         {

@@ -27,4 +27,14 @@ MonoBehaviour:
     characterName: Vieux
     longDialogue: "Tiens, prends \xE7a. C'est tout ce que j'ai \xE0 t'offrir. Tu
       m'as rendu un fier service aujourd'hui."
+    nextRowNumber: 3
+  - rowNumber: 3
+    characterName: Vieux
+    longDialogue: "Mais... il y a autre chose. Celui dont je ne peux prononcer le
+      nom r\xF4de encore par ici. Une cr\xE9ature sombre, rapide... elle se cache
+      dans la for\xEAt au nord du village. Si tu t'en approches, elle va te chercher."
+    nextRowNumber: 4
+  - rowNumber: 4
+    characterName: Lulu
+    longDialogue: "Je comprends. J'irai voir cette for\xEAt. Comptez sur moi."
     nextRowNumber: -1

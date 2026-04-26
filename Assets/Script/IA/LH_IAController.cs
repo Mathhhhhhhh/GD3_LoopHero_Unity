@@ -17,16 +17,38 @@ public class LH_IAController : MonoBehaviour
     [SerializeField] private StateType state = StateType.None;
     [SerializeField] private StateType nextState = StateType.None;
     [SerializeField] private GameObject target;
-    [SerializeField] private GameObject navpoint;
     [SerializeField] private float attackDistance = 1.5f;
 
+    [Header("Patrouille aléatoire")]
+    [SerializeField] private float _wanderRadius = 15f;
+
+    private NavMeshAgent _agent;
+    private Animator _animator;
+    private SightPerception _sight;
+
+    private bool _hasWanderDestination = false;
+
+    private void Awake()
+    {
+        _agent = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
+        _sight = GetComponent<SightPerception>();
+    }
+
+    /// <summary>Remet l'IA en état Patrol depuis un état arrêté (ex: après désactivation).</summary>
+    public void ResetToPatrol()
+    {
+        _hasWanderDestination = false;
+        state = StateType.Patrol;
+        nextState = StateType.None;
+    }
 
     private void Update()
     {
-        //Si j'ai une condition de changement d'�tat
+        //Si j'ai une condition de changement d'�tat
         if (TestChangeState())
         {
-            //alors je change d'�tat. 
+            //alors je change d'�tat. 
             ChangeState();
         }
         Behaviour();
@@ -37,7 +59,7 @@ public class LH_IAController : MonoBehaviour
         switch (state)
         {
             case StateType.Attack:
-                if (!GetComponent<SightPerception>().isDetected)
+                if (!_sight.isDetected)
                 {
                     nextState = StateType.Patrol;
                     return true;
@@ -51,11 +73,10 @@ public class LH_IAController : MonoBehaviour
                 break;
 
             case StateType.Patrol:
-                if (GetComponent<SightPerception>().isDetected)
+                if (_sight.isDetected)
                 {
                     if (Vector3.Distance(target.transform.position, transform.position) <= attackDistance)
                     {
-                        //alors j'attaque
                         nextState = StateType.Attack;
                         return true;
                     }
@@ -67,19 +88,15 @@ public class LH_IAController : MonoBehaviour
                 }
                 break;
 
-
             case StateType.Follow:
-
-                if (!GetComponent<SightPerception>().isDetected)
+                if (!_sight.isDetected)
                 {
                     nextState = StateType.Patrol;
                     return true;
                 }
-                // si la distance entre l'agent et le joueur est inf�rieur � ma distance d'attaque
 
                 if (Vector3.Distance(target.transform.position, transform.position) <= attackDistance)
                 {
-                    //alors j'attaque
                     nextState = StateType.Attack;
                     return true;
                 }
@@ -105,10 +122,9 @@ public class LH_IAController : MonoBehaviour
         switch (state)
         {
             case StateType.Follow:
-                GetComponent<NavMeshAgent>().SetDestination(transform.position);
-                break;
             case StateType.Patrol:
-                GetComponent<NavMeshAgent>().SetDestination(transform.position);
+                _agent.ResetPath();
+                _hasWanderDestination = false;
                 break;
         }
     }
@@ -132,19 +148,38 @@ public class LH_IAController : MonoBehaviour
 
     private void PatrolBehavior()
     {
-        GetComponent<NavMeshAgent>().SetDestination(navpoint.transform.position);
-        GetComponent<Animator>().SetFloat("Speed", GetComponent<NavMeshAgent>().velocity.magnitude);
+        // Tire un nouveau point aléatoire quand l'IA n'a pas de destination ou qu'elle est arrivée
+        bool destinationReached = !_agent.pathPending
+            && _agent.remainingDistance <= _agent.stoppingDistance + 0.1f;
+
+        if (!_hasWanderDestination || destinationReached)
+            _hasWanderDestination = TrySetRandomDestination();
+
+        _animator.SetFloat("Speed", _agent.velocity.magnitude);
+    }
+
+    /// <summary>Echantillonne un point aléatoire sur le NavMesh et l'assigne comme destination.</summary>
+    private bool TrySetRandomDestination()
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * _wanderRadius;
+        randomDirection += transform.position;
+
+        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, _wanderRadius, NavMesh.AllAreas))
+        {
+            _agent.SetDestination(hit.position);
+            return true;
+        }
+        return false;
     }
 
     private void FollowBehavior()
     {
-        GetComponent<NavMeshAgent>().SetDestination(target.transform.position);
-        GetComponent<Animator>().SetFloat("Speed", GetComponent<NavMeshAgent>().velocity.magnitude);
-
+        _agent.SetDestination(target.transform.position);
+        _animator.SetFloat("Speed", _agent.velocity.magnitude);
     }
 
     private void AttackBehavior()
     {
-        GetComponent<Animator>().SetTrigger(name: "Punch");
+        _animator.SetTrigger(name: "Punch");
     }
 }
