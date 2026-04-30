@@ -5,7 +5,7 @@ public struct GameDatasStruc
 {
     public int PlayerCellNumber;
 
-    public int IsPlayerInMiniGame;
+    public bool IsPlayerInMiniGame;
 
     public int MiniGameNumber;
 }
